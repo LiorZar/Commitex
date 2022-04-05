@@ -1,0 +1,56 @@
+.vs
+Debug
+Release
+bin-debug
+bin-release
+node_modules
+ipch
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.opensdf
+
+# Precompiled Headers
+*.gch
+*.pch
+*.ipch
+*.suo
+*.vssscc
+*.vspscc
+*.aps
+*.user
+*.jfm
+*.refactorlog
+*.sdf
+*.bak
+*.apk
+*.ipa
+*.map
+
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
