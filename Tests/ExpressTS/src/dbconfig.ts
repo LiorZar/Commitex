@@ -1,6 +1,6 @@
 import { config } from "mssql";
 
-export const dbCfg: config = {
+const dbCfg: config = {
     user: "hehe",
     password: "102102",
 
@@ -21,3 +21,4 @@ export const dbCfg: config = {
     }
 };
 
+export default dbCfg;

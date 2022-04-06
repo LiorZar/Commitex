@@ -1,29 +1,28 @@
-import Express, { Application, Request, Response, NextFunction } from "express";
-import sql from "mssql"
-import { dbCfg } from "./dbconfig";
+import Express, { Application, Request, Response } from "express";
+import db from "./db";
+import router from "./route";
 
 const app: Application = Express();
+app.use(Express.json());
+app.use(Express.urlencoded({ extended: true }));
+app.use(Express.static("public"));
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Helslo");
+let CC: number = 0;
+function intervalFunc() {
+    console.log('Cant stop me now!', CC);
+    CC++
+}
+//setInterval(intervalFunc, 1000);
+
+app.use("/router", router);
+app.get("/hello", (req: Request, res: Response) => {
+    res.send("Hello" + CC);
 })
 
-async function GetErrors() {
-    try {
-        let pool: sql.ConnectionPool = await sql.connect(dbCfg);
-        let res = await pool.request().query("select * from ERRORS_TABLE");
-        return res.recordset;
-
-    } catch (error) {
-        console.log(error);
-    }
-}
 app.get("/error/:id", (req: Request, res: Response) => {
-    GetErrors().then(result => {
+    db.Query("select * from ERRORS_TABLE", (result) => {
         res.json(result?.[+req.params.id]);
     });
 })
-
-
 
 app.listen(3000, () => console.log("Running"));
