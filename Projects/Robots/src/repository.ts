@@ -1,6 +1,7 @@
 import db from "./db";
 import { Player } from "./player"
 
+const LIMIT: number = 900;
 function clamp(val: number, minVal: number, maxVal: number): number {
     return Math.max(+minVal, Math.min(+maxVal, +val));
 }
@@ -31,7 +32,7 @@ class Repository {
         if (!!this.players[name])
             return false;
 
-        const player = new Player(name, Math.floor(Math.random() * 900), Math.floor(Math.random() * 900));;
+        const player = new Player(name, Math.floor(Math.random() * LIMIT), Math.floor(Math.random() * LIMIT));;
         player.alive = this.currTime;
         this.players[name] = player;
 
@@ -42,8 +43,8 @@ class Repository {
         const player = this.players[name];
         if (!player)
             return false;
-        player.x = clamp(player.x + dx * 1, 0, 1000);
-        player.y = clamp(player.y + dy * 1, 0, 1000);
+        player.x = clamp(player.x + dx * 1, 0, LIMIT);
+        player.y = clamp(player.y + dy * 1, 0, LIMIT);
         player.alive = this.currTime;
 
         return true;

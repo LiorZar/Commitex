@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("./db"));
 const player_1 = require("./player");
+const LIMIT = 900;
 function clamp(val, minVal, maxVal) {
     return Math.max(+minVal, Math.min(+maxVal, +val));
 }
@@ -28,7 +29,7 @@ class Repository {
     NewPlayer(name) {
         if (!!this.players[name])
             return false;
-        const player = new player_1.Player(name, Math.floor(Math.random() * 900), Math.floor(Math.random() * 900));
+        const player = new player_1.Player(name, Math.floor(Math.random() * LIMIT), Math.floor(Math.random() * LIMIT));
         ;
         player.alive = this.currTime;
         this.players[name] = player;
@@ -38,8 +39,8 @@ class Repository {
         const player = this.players[name];
         if (!player)
             return false;
-        player.x = clamp(player.x + dx * 1, 0, 1000);
-        player.y = clamp(player.y + dy * 1, 0, 1000);
+        player.x = clamp(player.x + dx * 1, 0, LIMIT);
+        player.y = clamp(player.y + dy * 1, 0, LIMIT);
         player.alive = this.currTime;
         return true;
     }
