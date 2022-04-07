@@ -20,7 +20,7 @@ app.get("/hello", (req: Request, res: Response) => {
 })
 
 app.get("/error/:id", (req: Request, res: Response) => {
-    db.Query("select * from extgames_Robo.Players", (result) => {
+    db.Query("select * from Players", (result) => {
         res.json(result);
     });
 })

@@ -26,7 +26,8 @@ class DB {
             const con: mysql.Connection = await mysql.createConnection({
                 host: "109.203.107.234",
                 user: "extgames_hehe",
-                password: "Gr#3nGobl1n"
+                password: "Gr#3nGobl1n",
+                database: "extgames_Robo"
             });
 
             return new Promise((resolve, reject) => {

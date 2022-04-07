@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Robots Server</title>
+  </head>
+  <body onkeydown="onKey(event, true)" onkeyup="onKey(event, false)">
+    <div style="display: block">
+      <input type="text" placeholder="name" id="name" />
+      <input type="button" value="Join Game" onclick="NewPlayer()" />
+    </div>
+
+    <canvas id="board" width="1000" height="1000" style="border: 1px solid #000000"> Your browser does not support the HTML canvas tag. </canvas>
+    <script src="index.js"></script>
+  </body>
+</html>

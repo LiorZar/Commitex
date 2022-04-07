@@ -1,0 +1,13 @@
+GET http://localhost:8080/hello
+
+###
+
+GET http://localhost:8080/players
+
+###
+
+POST http://localhost:8080/board
+
+###
+
+POST http://localhost:8080/move?name=hex&dx=10&dy=1
