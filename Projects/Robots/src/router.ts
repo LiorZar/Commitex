@@ -2,6 +2,11 @@ import Router, { Request, Response } from "express";
 import repository from "./repository";
 const router = Router();
 
+router.get("/hello", (req: Request, res: Response) => {
+    res.send("hello");
+});
+
+
 router.get("/players", (req: Request, res: Response) => {
     res.json(repository.GetPlayers());
 });

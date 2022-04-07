@@ -15,8 +15,9 @@ class Repository {
         this.killTime = 0;
         this.players = {};
         const that = this;
-        db_1.default.Query("CALL GetPlayers();", (result) => {
-            that.Load(result === null || result === void 0 ? void 0 : result[0]);
+        db_1.default.Query("exec GetPlayers", (result) => {
+            console.log(result);
+            that.Load(result);
         });
         this.onTick = this.tick.bind(this);
         setInterval(this.onTick, 16);
@@ -27,7 +28,7 @@ class Repository {
     NewPlayer(name) {
         if (!!this.players[name])
             return false;
-        const player = new player_1.Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));
+        const player = new player_1.Player(name, Math.floor(Math.random() * 900), Math.floor(Math.random() * 900));
         ;
         player.alive = this.currTime;
         this.players[name] = player;
@@ -48,7 +49,7 @@ class Repository {
         for (let name in this.players) {
             const p = this.players[name];
             if (this.currTime - p.alive > 10000) {
-                db_1.default.Query(`CALL DelPlayer('${name}');`, (result) => { });
+                db_1.default.Query(`exec DelPlayer '${name}'`, (result) => { });
                 removed.push(name);
             }
         }
@@ -71,7 +72,7 @@ class Repository {
         this.saveTime = this.currTime;
         for (let name in this.players) {
             const p = this.players[name];
-            db_1.default.Query(`CALL UpdPlayer('${name}', ${p.x}, ${p.y});`, (result) => { });
+            db_1.default.Query(`exec UpdPlayer '${name}', ${p.x}, ${p.y}`, (result) => { });
         }
     }
     tick() {

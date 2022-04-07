@@ -85,7 +85,7 @@ function refreshPlayer(player) {
   //   ctx.beginPath();
   //   ctx.arc(player.x, player.y, 10, 0, 2 * Math.PI);
   //   ctx.stroke();
-  ctx.drawImage(data.img, player.x, player.y, 64, 64);
+  ctx.drawImage(data.img, player.x, player.y, 128, 128);
 }
 
 function createPlayer(player) {

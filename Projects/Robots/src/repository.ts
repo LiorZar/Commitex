@@ -14,8 +14,9 @@ class Repository {
 
     constructor() {
         const that = this;
-        db.Query("CALL GetPlayers();", (result) => {
-            that.Load(result?.[0]);
+        db.Query("exec GetPlayers", (result) => {
+            console.log(result);
+            that.Load(result);
         });
 
         this.onTick = this.tick.bind(this);
@@ -30,7 +31,7 @@ class Repository {
         if (!!this.players[name])
             return false;
 
-        const player = new Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));;
+        const player = new Player(name, Math.floor(Math.random() * 900), Math.floor(Math.random() * 900));;
         player.alive = this.currTime;
         this.players[name] = player;
 
@@ -54,7 +55,7 @@ class Repository {
         for (let name in this.players) {
             const p = this.players[name];
             if (this.currTime - p.alive > 10000) {
-                db.Query(`CALL DelPlayer('${name}');`, (result) => { });
+                db.Query(`exec DelPlayer '${name}'`, (result) => { });
                 removed.push(name);
             }
         }
@@ -80,7 +81,7 @@ class Repository {
 
         for (let name in this.players) {
             const p: Player = this.players[name];
-            db.Query(`CALL UpdPlayer('${name}', ${p.x}, ${p.y});`, (result) => { });
+            db.Query(`exec UpdPlayer '${name}', ${p.x}, ${p.y}`, (result) => { });
         }
     }
 

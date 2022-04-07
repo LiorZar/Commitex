@@ -12,8 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mysql_1 = __importDefault(require("mysql"));
+const mssql_1 = __importDefault(require("mssql"));
 class DB {
+    constructor() {
+        this.config = {
+            user: "6DL",
+            password: "osh07est",
+            server: "2DLogic.com",
+            port: 9618,
+            database: "Robo",
+            pool: {
+                max: 10,
+                min: 0,
+                idleTimeoutMillis: 30000
+            },
+            options: {
+                encrypt: false,
+                trustServerCertificate: true
+            }
+        };
+    }
     Query(command, callback) {
         this.query(command).then(result => {
             callback(result);
@@ -22,27 +40,10 @@ class DB {
     query(command) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const con = yield mysql_1.default.createConnection({
-                    host: "extgames.com",
-                    user: "extgames_hehe",
-                    password: "Gr#3nGobl1n",
-                    database: "extgames_Robo"
-                });
-                return new Promise((resolve, reject) => {
-                    try {
-                        con.connect();
-                        con.query(command, function (err, results) {
-                            if (err)
-                                return reject(err);
-                            return resolve(results);
-                        });
-                        con.end();
-                    }
-                    catch (error) {
-                        console.log(error);
-                        return reject(error);
-                    }
-                });
+                let pool = yield mssql_1.default.connect(this.config);
+                let res = yield pool.request().query(command);
+                //pool.close();
+                return res.recordset;
             }
             catch (error) {
                 console.log(error);

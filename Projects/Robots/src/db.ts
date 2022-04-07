@@ -1,4 +1,4 @@
-import mysql from "mysql"
+import sql from "mssql"
 
 class DB {
     public Query(command: string, callback: (res: any) => void) {
@@ -9,32 +9,35 @@ class DB {
 
     private async query(command: string): Promise<any> {
         try {
-            const con: mysql.Connection = await mysql.createConnection({
-                host: "extgames.com",
-                user: "extgames_hehe",
-                password: "Gr#3nGobl1n",
-                database: "extgames_Robo"
-            });
+            let pool: sql.ConnectionPool = await sql.connect(this.config);
+            let res = await pool.request().query(command);
+            //pool.close();
+            return res.recordset;
 
-            return new Promise((resolve, reject) => {
-                try {
-                    con.connect();
-                    con.query(command, function (err: mysql.MysqlError | null, results?: any) {
-                        if (err) return reject(err);
-                        return resolve(results);
-                    });
-                    con.end();
-
-                } catch (error) {
-                    console.log(error);
-                    return reject(error);
-                }
-            });
         } catch (error) {
             console.log(error);
             return null;
         }
     }
+    private readonly config: sql.config = {
+        user: "6DL",
+        password: "osh07est",
+        server: "2DLogic.com",
+        port: 9618,
+        database: "Robo",
+
+        pool: {
+            max: 10,
+            min: 0,
+            idleTimeoutMillis: 30000
+        },
+
+        options: {
+            encrypt: false,
+            trustServerCertificate: true
+        }
+    }
+
 }
 
 const db: DB = new DB();
