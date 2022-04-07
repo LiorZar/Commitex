@@ -7,7 +7,7 @@ const dbCfg: config = {
     server: "127.0.0.1",
     port: 1433,
 
-    database: "AcesSystem",
+    database: "Robo",
 
     pool: {
         max: 10,

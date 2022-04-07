@@ -20,8 +20,8 @@ app.get("/hello", (req: Request, res: Response) => {
 })
 
 app.get("/error/:id", (req: Request, res: Response) => {
-    db.Query("select * from ERRORS_TABLE", (result) => {
-        res.json(result?.[+req.params.id]);
+    db.Query("select * from extgames_Robo.Players", (result) => {
+        res.json(result);
     });
 })
 
