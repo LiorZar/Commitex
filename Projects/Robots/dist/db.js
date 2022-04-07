@@ -30,19 +30,15 @@ class DB {
                 });
                 return new Promise((resolve, reject) => {
                     try {
-                        con.connect((err) => {
+                        con.connect();
+                        con.query(command, function (err, results) {
                             if (err)
                                 return reject(err);
-                            con.query(command, function (err, results) {
-                                con.end();
-                                if (err)
-                                    return reject(err);
-                                return resolve(results);
-                            });
+                            return resolve(results);
                         });
+                        con.end();
                     }
                     catch (error) {
-                        con.destroy();
                         console.log(error);
                         return reject(error);
                     }

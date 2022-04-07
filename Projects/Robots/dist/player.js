@@ -6,6 +6,7 @@ class Player {
         this.name = "";
         this.x = 0;
         this.y = 0;
+        this.alive = 0;
         this.name = name;
         this.x = x;
         this.y = y;

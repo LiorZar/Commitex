@@ -18,17 +18,14 @@ class DB {
 
             return new Promise((resolve, reject) => {
                 try {
-                    con.connect((err: mysql.MysqlError | null) => {
+                    con.connect();
+                    con.query(command, function (err: mysql.MysqlError | null, results?: any) {
                         if (err) return reject(err);
-                        con.query(command, function (err: mysql.MysqlError | null, results?: any) {
-                            con.end();
-                            if (err) return reject(err);
-                            return resolve(results);
-                        });
+                        return resolve(results);
                     });
+                    con.end();
 
                 } catch (error) {
-                    con.destroy();
                     console.log(error);
                     return reject(error);
                 }

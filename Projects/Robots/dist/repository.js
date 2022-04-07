@@ -12,6 +12,7 @@ class Repository {
     constructor() {
         this.currTime = (new Date()).getTime();
         this.saveTime = 0;
+        this.killTime = 0;
         this.players = {};
         const that = this;
         db_1.default.Query("CALL GetPlayers();", (result) => {
@@ -26,7 +27,10 @@ class Repository {
     NewPlayer(name) {
         if (!!this.players[name])
             return false;
-        this.players[name] = new player_1.Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));
+        const player = new player_1.Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));
+        ;
+        player.alive = this.currTime;
+        this.players[name] = player;
         return true;
     }
     MovePlayer(name, dx, dy) {
@@ -35,7 +39,22 @@ class Repository {
             return false;
         player.x = clamp(player.x + dx * 1, 0, 1000);
         player.y = clamp(player.y + dy * 1, 0, 1000);
+        player.alive = this.currTime;
         return true;
+    }
+    KillPlayers() {
+        this.killTime = this.currTime;
+        let removed = [];
+        for (let name in this.players) {
+            const p = this.players[name];
+            if (this.currTime - p.alive > 10000) {
+                db_1.default.Query(`CALL DelPlayer('${name}');`, (result) => { });
+                removed.push(name);
+            }
+        }
+        const len = removed.length;
+        for (let i = 0; i < len; ++i)
+            delete this.players[removed[i]];
     }
     Load(players) {
         if (!players)
@@ -45,6 +64,7 @@ class Repository {
         for (let i = 0; i < len; ++i) {
             const p = players[i];
             this.players[p.name] = new player_1.Player(p.name, p.x, p.y);
+            this.players[p.name].alive = this.currTime;
         }
     }
     Save() {
@@ -59,6 +79,8 @@ class Repository {
         this.currTime = (new Date()).getTime();
         if (this.currTime - this.saveTime > 30000) // every 30 seconds
             this.Save();
+        if (this.currTime - this.killTime > 1000) // every 1 seconds
+            this.KillPlayers();
     }
 }
 const rep = new Repository();

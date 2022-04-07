@@ -8,6 +8,7 @@ function clamp(val: number, minVal: number, maxVal: number): number {
 class Repository {
     private currTime: number = (new Date()).getTime();
     private saveTime: number = 0;
+    private killTime: number = 0;
     private players: { [name: string]: Player } = {};
     private onTick: () => void;
 
@@ -20,6 +21,7 @@ class Repository {
         this.onTick = this.tick.bind(this);
         setInterval(this.onTick, 16);
     }
+
     public GetPlayers(): Player[] {
         return Object.values(this.players);
     }
@@ -28,7 +30,9 @@ class Repository {
         if (!!this.players[name])
             return false;
 
-        this.players[name] = new Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));
+        const player = new Player(name, Math.floor(Math.random() * 1000), Math.floor(Math.random() * 1000));;
+        player.alive = this.currTime;
+        this.players[name] = player;
 
         return true;
     }
@@ -39,8 +43,25 @@ class Repository {
             return false;
         player.x = clamp(player.x + dx * 1, 0, 1000);
         player.y = clamp(player.y + dy * 1, 0, 1000);
+        player.alive = this.currTime;
 
         return true;
+    }
+
+    public KillPlayers() {
+        this.killTime = this.currTime;
+        let removed: string[] = [];
+        for (let name in this.players) {
+            const p = this.players[name];
+            if (this.currTime - p.alive > 10000) {
+                db.Query(`CALL DelPlayer('${name}');`, (result) => { });
+                removed.push(name);
+            }
+        }
+
+        const len: number = removed.length;
+        for (let i = 0; i < len; ++i)
+            delete this.players[removed[i]];
     }
 
     public Load(players: any) {
@@ -50,6 +71,7 @@ class Repository {
         for (let i = 0; i < len; ++i) {
             const p = players[i];
             this.players[p.name] = new Player(p.name, p.x, p.y);
+            this.players[p.name].alive = this.currTime;
         }
     }
 
@@ -68,6 +90,9 @@ class Repository {
 
         if (this.currTime - this.saveTime > 30000) // every 30 seconds
             this.Save();
+
+        if (this.currTime - this.killTime > 1000) // every 1 seconds
+            this.KillPlayers();
     }
 }
 
