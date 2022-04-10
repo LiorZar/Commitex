@@ -13,8 +13,3 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.static("public"));
 app.use("/", router_1.default);
 const server = app.listen(8080, () => console.log("Running"));
-app.get("/quit", (req, res) => {
-    console.log("quit");
-    res.send("quiting");
-    server.close();
-});
