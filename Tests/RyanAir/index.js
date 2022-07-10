@@ -10,7 +10,7 @@ const AIRPORTS = ["BRI", "BLQ", "BGY", "FCO", "NAP", "TRN", "TSF"];
 const CITIES = ["Bari", "Bolongia", "Bergamo", "Rome", "Napoli", "Turin", "Venice"];
 const Months = ["2022-12-01", "2023-01-01"];
 const RangeFrom = [new Date("2022-12-16"), new Date("2022-12-21")];
-const RangeTo = [new Date("2022-12-21"), new Date("2022-12-27")];
+const RangeTo = [new Date("2022-12-21"), new Date("2023-01-05")];
 const requests = [];
 const DB = { to: [], back: [] };
 let reqIdx = 0;
@@ -85,7 +85,8 @@ function Fare(td, f, t) {
   if (diffDays >= 10) td.style.color = "red";
   else if (diffDays <= 7) td.style.color = "orange";
 
-  if (fare < 120 && diffDays <= 7 && diffDays >= 5) td.style.background = "yellow";
+  //if (fare < 120 && diffDays <= 7 && diffDays >= 5) td.style.background = "yellow";
+  if (fare < 100) td.style.background = "yellow";
 }
 function done() {
   const table = document.createElement("TABLE");
