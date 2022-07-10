@@ -1,7 +1,7 @@
 import db from "./db";
 import { Player } from "./player"
 
-const LIMIT: number = 900;
+const LIMIT: number = 300;
 function clamp(val: number, minVal: number, maxVal: number): number {
     return Math.max(+minVal, Math.min(+maxVal, +val));
 }
@@ -55,7 +55,7 @@ class Repository {
         let removed: string[] = [];
         for (let name in this.players) {
             const p = this.players[name];
-            if (this.currTime - p.alive > 10000) {
+            if (this.currTime - p.alive > 30000) {
                 db.Query(`exec DelPlayer '${name}'`, (result) => { });
                 removed.push(name);
             }

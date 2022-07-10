@@ -80,12 +80,13 @@ function refreshPlayer(player) {
     createPlayer(player);
     return;
   }
-  if (!data.img) return;
-
-  //   ctx.beginPath();
-  //   ctx.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-  //   ctx.stroke();
-  ctx.drawImage(data.img, player.x, player.y, 128, 128);
+  if (!data.img) {
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+    ctx.stroke();
+  } else {
+    ctx.drawImage(data.img, player.x, player.y, 128, 128);
+  }
 }
 
 function createPlayer(player) {

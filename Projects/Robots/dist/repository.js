@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("./db"));
 const player_1 = require("./player");
-const LIMIT = 900;
+const LIMIT = 300;
 function clamp(val, minVal, maxVal) {
     return Math.max(+minVal, Math.min(+maxVal, +val));
 }
@@ -49,7 +49,7 @@ class Repository {
         let removed = [];
         for (let name in this.players) {
             const p = this.players[name];
-            if (this.currTime - p.alive > 10000) {
+            if (this.currTime - p.alive > 30000) {
                 db_1.default.Query(`exec DelPlayer '${name}'`, (result) => { });
                 removed.push(name);
             }

@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const repository_1 = __importDefault(require("./repository"));
 const router = (0, express_1.default)();
 router.get("/hello", (req, res) => {
-    res.send("hello");
+    res.send("good bye");
 });
 router.get("/players", (req, res) => {
     res.json(repository_1.default.GetPlayers());
