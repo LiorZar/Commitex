@@ -3,40 +3,22 @@
 // between [-10,-10]x[10,10]
 // u can test it by clicking on the canvas
 
+//ex13
 // draw the f(x) = x;
-function ex1() {
-    var x, y, j;
-    for (var i = 0; i < size; ++i) {
-        x = i2x(i);
-        y = x;
-        j = y2j(y);
-        setPixel(i, j, "green");
-    }
-}
-ex1();
+function ex13() {}
+//render = ex13;
 
-
-// ex2
+//ex14
 // draw the f(x) = x*x;
-function ex2() {
+function ex14() {}
+//render = ex14;
 
-}
-// ex2();
-
-
-// ex3
+//ex15
 // draw the f(x) = sin(x);
-function ex3() {
+function ex15() {}
+//render = ex15
 
-}
-// ex3();
-
-
-// ex4
+//ex16
 // draw the f(x) = sin(1/x); x>0
-function ex3() {
-
-}
-// ex4();
-
-
+function ex16() {}
+//render = ex16
