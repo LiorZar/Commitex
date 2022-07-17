@@ -105,3 +105,22 @@ console.log("z = ", z);
 // if v do not exists return -1
 // call this function with 3 diffrent values and print them to the log
 //------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//Question 9
+// declare three functions that gets one parameter x
+// 1. retuns square x
+// 2. returns sin x
+// 3. returns 1 / x
+// call this function with 3 diffrent values and print them to the log
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//Question 10
+// declare a function that gets twp parameters "arr", "fn"
+// "arr" = array of numbers
+// "fn" = one of the function from Question 9
+// the function go over the array and activate the function on all the elements
+// call this function with 3 diffrent values and print them to the log
+// call this function with illegal values and check what happend
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
