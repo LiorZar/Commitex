@@ -181,3 +181,47 @@ console.log(`Qest8`);
 console.log(FindIndx([2, 3, 4, 5, 6], 2));
 console.log(FindIndx([2, 3, 4, 5, 6], 5));
 console.log(FindIndx([12, 3, 24, 5, 6], 7));
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//Question 9
+// declare three functions that gets one parameter x
+// 1. retuns square x
+// 2. returns sin x
+// 3. returns 1 / x
+// call this function with 3 diffrent values and print them to the log
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+function squar(x) {
+  return x * x;
+}
+function sin(x) {
+  let t = Math.sin(x);
+  return t;
+}
+function div(x) {
+  return 1 / x;
+}
+console.log(squar(3));
+console.log(sin(2));
+console.log(div(3));
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//Question 10
+// declare a function that gets twp parameters "arr", "fn"
+// "arr" = array of numbers
+// "fn" = one of the function from Question 9
+// the function go over the array and activate the function on all the elements
+// call this function with 3 diffrent values and print them to the log
+// call this function with illegal values and check what happend
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+function arrManip(arr, fn) {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = fn(arr[i]);
+  }
+  console.log(arr);
+}
+arrManip([2, 3, 4, 5], squar);
+arrManip([2, 3, 4, 5], sin);
+arrManip([2, 3, 4, 5], div);
+let arr = [3, 5, 6];
+arrManip(arr, squar);
+arrManip(arr, squar);
+arrManip(arr, div);

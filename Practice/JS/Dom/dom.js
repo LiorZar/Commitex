@@ -5,27 +5,51 @@
 
 // ex1
 // print the document into the log
-function ex1() {}
+function ex1() {
+  var el = document.querySelector(`body`);
+  console.log(el);
+}
+
+ex1();
 
 // ex2
-// 1. find div called top  using getElementById
+// 1. find div called "top"  using getElementById
 // 2. save it in a variable
 // 3. print the variable
 // 4. print all varaible keys
-function ex2() {}
-
+function ex2() {
+  var bls = document.getElementById(`top`); // this is a div Object
+  console.log(bls);
+  // "of" command is something else, should be in
+  for (let bl in bls) {
+    // reminder: Object.keys
+    console.log(bl);
+  }
+  // or
+  console.log(Object.keys(bls));
+}
+ex2();
+\
 // ex3
 // 1. find div called top  using getElementById
 // 2. print his innerHTML field to the log
-function ex3() {}
+function ex3() {
+  var fuck = document.querySelector(`top`) . innerText;
 
+  console.log(fuck);
+}
+ex3();
 // ex4
 // 1. find div called top  using getElementById
 // 2. print his style field to the log
 // 3. save style into a variable
 // 4. print all the style keys
-function ex4() {}
-
+function ex4() {
+  var bls = document.getElementById(`top`);
+  var st = bls.style;
+  console.log(st);
+}
+ex4();
 // ex5
 // 1. find div called top  using getElementById
 // 2. change his style backgroundColor fields to red
