@@ -23,41 +23,91 @@
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 // example1
-// y = sin(x)
+// y = x*x
 //-------------------------------------------------------------------
 function example1() {
-	var x, y;
-	for (x = LEFT; x < RIGHT; x += PX * 0.1) {
-		y = x * x;
-		setPoint(x, y, "red");
-	}
+  var x, y;
+  for (x = LEFT; x < RIGHT; x += PX * 0.1) {
+    y = x * x;
+    setPoint(x, y, "red");
+  }
+  console.log(`hi`);
 }
-render = example1;
+// render = example1;
 
 // ex1
 // write a function that fills a horizontal line the color red
-function ex1() {}
-//render = ex1;
+function ex1() {
+  var x, y;
+  for (x = LEFT; x < RIGHT; x += PX * 0.1) {
+    y = 2;
+
+    setPoint(x, y, "red");
+  }
+}
+// render = ex1;
 
 // ex2
 // write a function that fills a vertical line the color red
-function ex2() {}
-//render = ex2;
+function ex2() {
+  var x, y;
+  for (y = BOTTOM; y < TOP; y += PX * 0.1) {
+    x = 2;
+    setPoint(x, y, "red");
+  }
+}
+// render = ex2;
 
 // ex3
 // write a function that draws a rectangle
-function ex3() {}
-//render = ex3;
+function ex3() {
+  var x, y;
+  for (x = -5; x < 5; x += PX * 0.1) {
+    y = 2;
+
+    setPoint(x, y, "red");
+  }
+  for (x = -5; x < 5; x += PX * 0.1) {
+    y = -2;
+
+    setPoint(x, y, "red");
+  }
+  for (y = -2; y < 2; y += PX * 0.1) {
+    x = -5;
+    setPoint(x, y, "red");
+  }
+  for (y = -2; y < 2; y += PX * 0.1) {
+    x = 5;
+    setPoint(x, y, "red");
+  }
+}
+
+// render = ex3;
 
 // ex4
 // write a function that draws a diagonal line
-function ex4() {}
-//render = ex4;
+function ex4() {
+  var x, y;
+  for (x = LEFT; x < RIGHT; x += PX * 0.1) {
+    y = 0.5 * x;
+    setPoint(x, y, "red");
+  }
+}
+// render = ex4;
 
 // ex5
 // write a function that draws a line, between two points a, b, with some color
-function drawLine(a, b, color) {}
-//drawLine( {x:10, y:10}, {x:50, y:50}, "red" );
+function drawLine(a, b, color) {
+  var x1, x2, y1, y2;
+  var m = (y2 - y1) / (x2 - x1);
+  var n;
+  n = y1 - m * x1;
+  for (x = LEFT; x < RIGHT; x += PX * 0.1) {
+    y = m * x + n;
+    setPoint(x, y, "red");
+  }
+}
+drawLine({ x: 10, y: 10 }, { x: 50, y: 50 }, "red");
 
 // ex6
 // use the function you wrote in ex5(drawLine) to draw rectangle, like ex2
