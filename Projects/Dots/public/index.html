@@ -4,16 +4,56 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Dots Server</title>
+		<title>Dot Server</title>
 		<script src="/socket.io/socket.io.js"></script>
+		<link rel="stylesheet" href="index.css" />
 	</head>
 	<body onkeydown="onKey(event, true)" onkeyup="onKey(event, false)">
-		<div style="display: block">
-			<input type="text" placeholder="name" id="name" />
-			<input type="button" value="Join Game" onclick="NewPlayer()" />
+		<div class="nav-pages">
+			<button class="pagelinks" onclick="openPage(event, 'Home')">Home</button>
+			<button class="pagelinks" onclick="openPage(event, 'Login')">Login</button>
+			<button class="pagelinks" onclick="openPage(event, 'Game')">Game</button>
+			<button class="pagelinks" onclick="openPage(event, 'LeaderBoard')">Leader Board</button>
+		</div>
+		<div id="Home" class="pagecontent">
+			<h3>Home</h3>
+			<p>London is the capital city of England.</p>
 		</div>
 
-		<canvas id="board" width="400" height="400" style="border: 1px solid #000000"> Your browser does not support the HTML canvas tag. </canvas>
+		<div id="Login" class="pagecontent">
+			<div id="LoginForm">
+				<form onsubmit="return Login()">
+					<input type="text" name="gname" placeholder="gamer name" />
+					<input type="password" name="passwd" placeholder="password" />
+					<button>login</button>
+				</form>
+				<button class="link" onclick="showLoginForm('Register')">Register</button>
+			</div>
+			<div id="RegisterForm" style="display: none">
+				<form onsubmit="return Register()">
+					<input type="text" name="fname" placeholder="first name" />
+					<input type="text" name="lname" placeholder="last name" />
+					<input type="text" name="new_gname" placeholder="gamer name" />
+					<input type="password" name="new_passwd" placeholder="password" />
+					<button>register</button>
+				</form>
+				<button class="link" onclick="showLoginForm('Login')">back to login</button>
+			</div>
+		</div>
+
+		<div id="Game" class="pagecontent">
+			<p align="center">
+				<canvas id="board"> Your browser does not support the HTML canvas tag. </canvas>
+			</p>
+		</div>
+		<div id="LeaderBoard" class="pagecontent">
+			<h3>LeaderBoard</h3>
+			<p>Tokyo is the capital of Japan.</p>
+		</div>
+		<script src="ui.js"></script>
+		<script src="db.js"></script>
+		<script src="login.js"></script>
+		<script src="game.js"></script>
 		<script src="index.js"></script>
 	</body>
 </html>

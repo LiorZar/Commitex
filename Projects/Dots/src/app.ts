@@ -1,6 +1,7 @@
-import Express, { Application, Request, Response } from "express";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+import Express, { Application } from "express";
+import repository from "./repository";
 
 const app: Application = Express();
 app.use(Express.json());
@@ -13,3 +14,4 @@ io.on("connection", (socket: Socket) => {
     console.log("connected", socket.id)
 });
 server.listen(3000, () => console.log("Running"));
+console.log(repository);
