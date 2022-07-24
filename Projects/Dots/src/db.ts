@@ -1,9 +1,10 @@
 import sql from "mssql"
 
-class DB {
-    public Query(command: string, callback: (res: any) => void) {
+export class DB {
+    public Query(command: string, callback?: (res: any) => void): void {
         this.query(command).then(result => {
-            callback(result);
+            if (callback)
+                callback(result);
         });
     }
 
@@ -16,15 +17,15 @@ class DB {
 
         } catch (error) {
             console.log(error);
-            return null;
+            return "error";
         }
     }
-    private readonly config: sql.config = {
-        user: "6DL",
-        password: "osh07est",
-        server: "2DLogic.com",
-        port: 9618,
-        database: "Robo",
+    public readonly config: sql.config = {
+        user: process.env.DB_USER,
+        password: process.env.DB_PWD,
+        server: process.env.DB_SERVER!,
+        port: Number(process.env.DB_PORT),
+        database: process.env.DB_NAME,
 
         pool: {
             max: 10,
@@ -37,9 +38,4 @@ class DB {
             trustServerCertificate: true
         }
     }
-
 }
-
-const db: DB = new DB();
-
-export default db;

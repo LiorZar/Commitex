@@ -4,6 +4,11 @@ GET https://www.ryanair.com/api/farfnd/3/oneWayFares/TLV/FCO/cheapestPerDay?mark
 
 ###
 
-GET https://www.ryanair.com/api/farfnd/3/oneWayFares/FCO/TLV/cheapestPerDay?market=en-ie&outboundMonthOfDate=2022-12-01
+GET https://www.ryanair.com/api/farfnd/3/oneWayFares/FCO/TLV/cheapestPerDay?market=en-ie&outboundMonthOfDate=2022-12-01&adults=1
+
+
+###
+
+POST https://be.wizzair.com/12.2.0/Api/asset/map
 
 

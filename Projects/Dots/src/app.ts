@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 import Express, { Application } from "express";
@@ -12,6 +13,6 @@ const io = new Server(server, {});
 
 io.on("connection", (socket: Socket) => {
     console.log("connected", socket.id)
+    repository.game.NewConnection(socket);
 });
-server.listen(3000, () => console.log("Running"));
-console.log(repository);
+server.listen(3000, () => repository.Init());
