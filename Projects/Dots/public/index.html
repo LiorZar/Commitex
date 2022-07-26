@@ -10,10 +10,10 @@
 	</head>
 	<body onkeydown="onKey(event, true)" onkeyup="onKey(event, false)">
 		<div class="nav-pages">
-			<button class="pagelinks" onclick="openPage(event, 'Home')">Home</button>
-			<button class="pagelinks" onclick="openPage(event, 'Login')">Login</button>
-			<button class="pagelinks" onclick="openPage(event, 'Game')">Game</button>
-			<button class="pagelinks" onclick="openPage(event, 'LeaderBoard')">Leader Board</button>
+			<button class="pagelinks" onclick="repository.openPage(event, 'Home')">Home</button>
+			<button class="pagelinks" onclick="repository.openPage(event, 'Login')">Login</button>
+			<button class="pagelinks" onclick="repository.openPage(event, 'Game')">Game</button>
+			<button class="pagelinks" onclick="repository.openPage(event, 'LeaderBoard')">Leader Board</button>
 		</div>
 		<div id="Home" class="pagecontent">
 			<h3>Home</h3>
@@ -42,6 +42,7 @@
 		</div>
 
 		<div id="Game" class="pagecontent">
+			<button onclick="JoinGame()">Join Game</button>
 			<p align="center">
 				<canvas id="board"> Your browser does not support the HTML canvas tag. </canvas>
 			</p>
@@ -50,10 +51,12 @@
 			<h3>LeaderBoard</h3>
 			<p>Tokyo is the capital of Japan.</p>
 		</div>
+		<script src="repository.js"></script>
 		<script src="ui.js"></script>
-		<script src="db.js"></script>
-		<script src="login.js"></script>
+		<script src="user.js"></script>
+		<script src="pt.js"></script>
+		<script src="mass.js"></script>
+		<script src="dot.js"></script>
 		<script src="game.js"></script>
-		<script src="index.js"></script>
 	</body>
 </html>

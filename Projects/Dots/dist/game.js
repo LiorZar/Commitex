@@ -1,43 +1,36 @@
-import { Socket } from "socket.io";
-import { Player } from "./player";
-import repository from "./repository";
-
-export class Game {
-    private players: { [session: string]: Player } = {};
-    private inGame: { [id: string]: Player } = {};
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Game = void 0;
+const player_1 = require("./player");
+class Game {
     constructor() {
-
+        this.players = {};
+        this.inGame = {};
     }
-
-    public NewConnection(sock: Socket): void {
-        const player = new Player(sock);
+    NewConnection(sock) {
+        const player = new player_1.Player(sock);
         this.players[player.session] = player;
     }
-
-    public onPlayerDisconnect(player: Player): void {
+    onPlayerDisconnect(player) {
         delete this.inGame[player.id];
         delete this.players[player.session];
         console.log("player deleted", player.session);
     }
-
-    public onPlayerJoin(player: Player): boolean {
+    onPlayerJoin(player) {
         const p = this.inGame[player.id];
         if (p || player.id <= 0) {
             if (p === player)
                 return false;
         }
-
         this.inGame[player.id] = player;
         player.HP = 100;
         console.log("player joined", player.id);
-
         return true;
     }
-
-    public onPlayerMessage(player: Player, code: string, data: any): void {
+    onPlayerMessage(player, code, data) {
         delete this.inGame[player.session];
         delete this.players[player.session];
         console.log("player deleted", player.session);
     }
 }
-
+exports.Game = Game;

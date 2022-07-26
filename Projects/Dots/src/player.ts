@@ -6,22 +6,30 @@ import repository from "./repository";
 export class Player {
     private _id: number = 0;
     private _sock: Socket;
+
+    private _hp: number = 0;
+
     constructor(sock: Socket) {
         this._sock = sock;
         this._sock.on("disconnect", this.onDisconnect);
         this._sock.on("login", this.onLogin);
         this._sock.on("register", this.onRegister);
+        this._sock.on("join", this.onJoin);
+        this._sock.on("message", this.onMessage);
 
         repository.db.Query(`insert sessions (id) values('${this.session}')`);
     }
 
     public get id(): number { return this._id; }
+    public get HP(): number { return this._hp; }
+    public set HP(v: number) { this._hp = v; }
     public get session(): string { return this._sock.id; }
 
     public onDisconnect = () => {
         repository.game.onPlayerDisconnect(this);
         repository.db.Query(`update sessions set ctime=GETDATE() where id = '${this.session}'`);
     }
+
     public onRegister = (gname: string, password: string, fname: string, lname: string) => {
         if (this._id > 0)
             this._sock.emit("register", false, "already logged in");
@@ -31,6 +39,7 @@ export class Player {
             });
         }
     }
+
     public onLogin = (name: string, password: string) => {
         if (this._id > 0)
             this._sock.emit("login", false, "already logged in");
@@ -40,9 +49,19 @@ export class Player {
                     this._sock.emit("login", false, "wrong gamer name or password");
                 else {
                     this._id = res[0].id;
-                    this._sock.emit("login", true, `userId = ${this.id}`);
+                    this._sock.emit("login", true, this.id);
+                    console.log("logged-in", this.id);
                 }
             });
         }
     }
+
+    public onJoin = () => {
+        this._sock.emit("join", repository.game.onPlayerJoin(this))
+    }
+
+    public onMessage = (code: string, data: any) => {
+        repository.game.onPlayerMessage(this, code, data);
+    }
+
 }
