@@ -1,7 +1,14 @@
 function onKey(event, val) {
 	keysPressed[event.keyCode] = val;
 }
-
+const Clock = {
+	currTime: function () {
+		return new Date().getTime();
+	},
+	seconds: function () {
+		return new Date().getTime() * 0.001;
+	},
+};
 repository.openPage = function (event, pageName) {
 	let i;
 	const pagecontent = document.getElementsByClassName("pagecontent"); // get all pages

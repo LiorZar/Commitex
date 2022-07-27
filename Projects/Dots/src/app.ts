@@ -9,9 +9,9 @@ app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.static("public"));
 const server = createServer(app);
-const io = new Server(server, {});
+repository.io = new Server(server, {});
 
-io.on("connection", (socket: Socket) => {
+repository.io.on("connection", (socket: Socket) => {
     console.log("connected", socket.id)
     repository.game.NewConnection(socket);
 });

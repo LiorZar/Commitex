@@ -50,4 +50,5 @@ canvas {
 	border: 4px solid #0408ff;
 	width: 800px;
 	height: 800px;
+	cursor: crosshair;
 }

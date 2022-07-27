@@ -77,8 +77,8 @@ function Fare(td, f, t) {
 	const diffTime = t.day - f.day;
 	if (diffTime <= 0) return;
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-	const fare = f.price + t.price + 34;
-	td.appendChild(document.createTextNode(`${diffDays}, ${fare * 3.5}N`));
+	const fare = f.price + t.price;
+	td.appendChild(document.createTextNode(`${diffDays}, ${fare}N`));
 	//if (fare > 100) td.style.background = "red";
 	//else if (fare < 100) td.style.background = "green";
 
@@ -86,7 +86,7 @@ function Fare(td, f, t) {
 	else if (diffDays < 5) td.style.color = "orange";
 
 	//if (fare < 120 && diffDays <= 7 && diffDays >= 5) td.style.background = "yellow";
-	if (fare < 200 && 4 <= diffDays && diffDays <= 10) td.style.background = "yellow";
+	if (fare < 200 && 4 <= diffDays && diffDays <= 6) td.style.background = "yellow";
 }
 function done() {
 	const table = document.createElement("TABLE");

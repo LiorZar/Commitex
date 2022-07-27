@@ -6,6 +6,11 @@ class PT {
 	clone() {
 		return new PT(this.x, this.y);
 	}
+	copy(pt) {
+		this.x = pt.x;
+		this.y = pt.y;
+		return this;
+	}
 	set(x, y) {
 		this.x = x;
 		this.y = y;
@@ -13,22 +18,25 @@ class PT {
 	add(pt) {
 		this.x += pt.x;
 		this.y += pt.y;
-		return this;
+		return this.__fix();
 	}
 	sub(pt) {
 		this.x -= pt.x;
 		this.y -= pt.y;
-		return this;
+		return this.__fix();
 	}
 	mul(scalar) {
 		this.x *= scalar;
 		this.y *= scalar;
-		return this;
+		return this.__fix();
 	}
 	div(scalar) {
 		this.x /= scalar;
 		this.y /= scalar;
-		return this;
+		return this.__fix();
+	}
+	unit() {
+		return this.div(this.length);
 	}
 	_add(pt) {
 		return this.clone().add(pt);
@@ -45,10 +53,15 @@ class PT {
 	dot(pt) {
 		return this.x * pt.x + this.y * pt.y;
 	}
-	sqr() {
+	get sqr() {
 		return this.x * this.x + this.y * this.y;
 	}
-	length() {
-		return Math.sqrt(this.sqr());
+	get length() {
+		return Math.sqrt(this.sqr);
+	}
+	__fix() {
+		if (Math.abs(this.x) < 0.0001) this.x = 0;
+		if (Math.abs(this.y) < 0.0001) this.y = 0;
+		return this;
 	}
 }

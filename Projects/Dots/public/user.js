@@ -4,6 +4,12 @@ repository.socket = io();
 repository.socket.on("connect", () => {
 	console.log("connect");
 	ReLogin();
+	repository.socket.on("latency", () => {
+		repository.socket.emit("latency");
+	});
+	repository.socket.on("game", (data) => {
+		repository.game.onData(data);
+	});
 });
 
 function ReLogin() {
@@ -43,8 +49,11 @@ function Register() {
 }
 
 function JoinGame() {
-	repository.socket.once("join", (success) => {
-		if (true === success) repository.game.join();
+	repository.socket.once("join", (currTime) => {
+		if (currTime > 0) {
+			repository.game.join();
+			repository.socket.emit("joined", currTime);
+		}
 	});
 	repository.socket.emit("join");
 }

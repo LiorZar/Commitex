@@ -1,29 +1,29 @@
 import { Socket } from "socket.io";
-import { Game } from "./game";
+import { Dot } from "./dot";
 import repository from "./repository";
 
 
 export class Player {
+    public dot: Dot = new Dot();
     private _id: number = 0;
-    private _sock: Socket;
-
-    private _hp: number = 0;
+    public sock: Socket;
 
     constructor(sock: Socket) {
-        this._sock = sock;
-        this._sock.on("disconnect", this.onDisconnect);
-        this._sock.on("login", this.onLogin);
-        this._sock.on("register", this.onRegister);
-        this._sock.on("join", this.onJoin);
-        this._sock.on("message", this.onMessage);
+        this.sock = sock;
+        this.sock.on("disconnect", this.onDisconnect);
+        this.sock.on("login", this.onLogin);
+        this.sock.on("register", this.onRegister);
+        this.sock.on("join", () => repository.game.onPlayerJoining(this));
+        this.sock.on("joined", (currTime: number) => this.dot.latency = Math.min(0.2, ((new Date()).getTime() - currTime) / 2000.0));
+        this.sock.on("latency", () => repository.game.onPlayerLatency(this));
+        this.sock.on("message", (code: string, data: any) => repository.game.onPlayerMessage(this, code, data));
 
         repository.db.Query(`insert sessions (id) values('${this.session}')`);
     }
 
     public get id(): number { return this._id; }
-    public get HP(): number { return this._hp; }
-    public set HP(v: number) { this._hp = v; }
-    public get session(): string { return this._sock.id; }
+
+    public get session(): string { return this.sock.id; }
 
     public onDisconnect = () => {
         repository.game.onPlayerDisconnect(this);
@@ -32,36 +32,28 @@ export class Player {
 
     public onRegister = (gname: string, password: string, fname: string, lname: string) => {
         if (this._id > 0)
-            this._sock.emit("register", false, "already logged in");
+            this.sock.emit("register", false, "already logged in");
         else {
             repository.db.Query(`insert users (gname, password, fname, lname) values ('${gname}','${password}','${fname}','${lname}')`, (res) => {
-                this._sock.emit("register", "error" !== res, "");
+                this.sock.emit("register", "error" !== res, "");
             });
         }
     }
 
     public onLogin = (name: string, password: string) => {
         if (this._id > 0)
-            this._sock.emit("login", false, "already logged in");
+            this.sock.emit("login", false, "already logged in");
         else {
             repository.db.Query(`select id from users where gname = '${name}' and password = '${password}'`, (res: any[]) => {
                 if (res.length <= 0)
-                    this._sock.emit("login", false, "wrong gamer name or password");
+                    this.sock.emit("login", false, "wrong gamer name or password");
                 else {
                     this._id = res[0].id;
-                    this._sock.emit("login", true, this.id);
+                    this.sock.emit("login", true, this.id);
                     console.log("logged-in", this.id);
+                    this.dot.name = name;
                 }
             });
         }
     }
-
-    public onJoin = () => {
-        this._sock.emit("join", repository.game.onPlayerJoin(this))
-    }
-
-    public onMessage = (code: string, data: any) => {
-        repository.game.onPlayerMessage(this, code, data);
-    }
-
 }

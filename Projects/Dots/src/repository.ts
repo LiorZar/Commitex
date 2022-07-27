@@ -1,29 +1,20 @@
 import { DB } from "./db";
 import { Game } from "./game";
+import { Server } from "socket.io";
 
 class Repository {
     public db: DB = new DB();
     public game: Game = new Game();
-    private currTime: number = (new Date()).getTime();
-    private saveTime: number = 0;
-    private killTime: number = 0;
-    private onTick: () => void;
+    private _io: Server | null = null;
 
     constructor() {
-        this.onTick = this.tick.bind(this);
-        setInterval(this.onTick, 16);
     }
-
     public Init(): void {
         console.log("Running");
         this.db.Query("delete sessions");
     }
-    private tick() {
-        const prevTime = this.currTime;
-        this.currTime = (new Date()).getTime();
-    }
-
-
+    public get io(): Server { return this._io!; }
+    public set io(s: Server) { this._io = s; }
 }
 
 const rep: Repository = new Repository();
