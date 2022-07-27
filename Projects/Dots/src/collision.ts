@@ -23,3 +23,5 @@ export function CollisionResponse(vel1: PT, M1: number, vel2: PT, M2: number) {
     vel2.copy(V2);
 }
 //-----------------------------------------------------------------------------------------------//
+export function clamp(v: number, min: number, max: number): number { return Math.min(Math.max(v, min), max); }
+//-----------------------------------------------------------------------------------------------//

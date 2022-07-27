@@ -2,7 +2,7 @@ import { Mass } from "./mass"
 import { Clock } from "./clock";
 import { Shot } from "./shot";
 import { PT } from "./pt";
-import { CollisionResponse, Sphere2Sphere } from "./collision";
+import { clamp, CollisionResponse, Sphere2Sphere } from "./collision";
 
 const WALL_MASS = 1000.0;
 const ZeroVelocity = new PT(0, 0);
@@ -12,8 +12,10 @@ const DOT_DOT_COL_FACTOR = 10;
 const DOT_DOT_COL_HP = 10;
 const DOT_SHOT_COL_FACTOR = 50;
 const DOT_SHOT_COL_HP = 20;
+const DOT_KILL_HP = 50;
 
 const RADIUS = 10.0;
+const RADUIS_EX = RADIUS + 1.0;
 const SIZE = 1000.0;
 const COLORS = ["red", "cyan", "blue", "lightblue", "purple", "yellow", "lime", "magenta", "pink", "white", "silver", "orange", "brown", "maroon", "green", "olive", "aquamarine"];
 
@@ -29,7 +31,7 @@ export class Dot extends Mass {
     constructor() {
         super();
         this.color = COLORS[Clock.RandN(COLORS.length)];
-        this.position.set(Clock.RandB(RADIUS, SIZE - RADIUS), Clock.RandB(RADIUS, SIZE - RADIUS));
+        this.position.set(Clock.RandB(RADUIS_EX, SIZE - RADUIS_EX), Clock.RandB(RADUIS_EX, SIZE - RADUIS_EX));
     }
     public get HP(): number { return this._hp; }
     public set HP(v: number) { this._hp = v; this.alive = this._hp > 0; }
@@ -64,6 +66,10 @@ export class Dot extends Mass {
         const s2 = dot.shotsTest(this);
         this.HP -= DOT_SHOT_COL_HP * s1;
         dot.HP -= DOT_SHOT_COL_HP * s2;
+
+        if (s1 > 0 && !this.alive) dot.HP += DOT_KILL_HP;
+        if (s2 > 0 && !dot.alive) this.HP += DOT_KILL_HP;
+
         return false;
     }
     public boundTest(): void {
@@ -71,6 +77,14 @@ export class Dot extends Mass {
             this.velocity.x *= -1;
         if (this.position.y < RADIUS || this.position.y > 1000 - RADIUS)
             this.velocity.y *= -1;
+        this.position.x = clamp(this.position.x, RADUIS_EX, 1000 - RADUIS_EX);
+        this.position.y = clamp(this.position.y, RADUIS_EX, 1000 - RADUIS_EX);
+    }
+    public hpTest(): boolean {
+        if (!this.alive) return true;
+        if (this.HP > 0) return false;
+        this.HP = 0;
+        return true;
     }
     protected shotsTest(dot: Dot): number {
         let count = 0;

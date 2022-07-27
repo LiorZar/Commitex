@@ -49,7 +49,6 @@ export class Game {
         player.dot.latency = Math.min(0.2, (Clock.currTime - this.latencyTime) / 2000.0);
     }
     public onPlayerMessage(player: Player, code: string, data: any): void {
-        //console.log("message", code, data);
         if ("me" === code) {
             player.dot.fill(data as Dot);
         }
@@ -64,7 +63,6 @@ export class Game {
         this.latency();
         this.simulate();
         this.collisionTest();
-        this.hpTest();
         this.broadcastData();
     }
     private latency() {
@@ -78,11 +76,8 @@ export class Game {
             this.inGame[id].simulate();
     }
     private collisionTest(): void {
-        const dots: Dot[] = [];
-        for (let id in this.inGame) {
-            if (this.inGame[id].alive)
-                dots.push(this.inGame[id]);
-        }
+        const ids: any[] = Object.keys(this.inGame);
+        const dots: Dot[] = Object.values(this.inGame);
 
         const len = dots.length;
         for (let i = 0; i < len; ++i) {
@@ -91,11 +86,11 @@ export class Game {
                 dots[j].collisionTest(d);
             }
             d.boundTest();
+            if (d.hpTest())
+                delete this.inGame[ids[i]];
         }
     }
-    private hpTest(): void {
 
-    }
     private broadcastData(): void {
         repository.io.emit("game", this.inGame);
     }

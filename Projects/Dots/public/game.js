@@ -68,6 +68,19 @@ class Game {
 	update() {
 		for (let id in this.players) this.players[id].simulate();
 	}
+	collisionTest() {
+		const dots = Object.values(this.players);
+
+		const len = dots.length;
+		for (let i = 0; i < len; ++i) {
+			const d = dots[i];
+			for (let j = i + 1; j < len; ++j) {
+				dots[j].collisionTest(d);
+			}
+			d.boundTest();
+			d.hpTest();
+		}
+	}
 	draw() {
 		ctx.fillStyle = "black";
 		ctx.font = `${TEXT_SIZE}px Arial`;
@@ -80,6 +93,7 @@ class Game {
 		this.checkInput();
 		this.sendInfo();
 		this.update();
+		this.collisionTest();
 		this.draw();
 	};
 }
