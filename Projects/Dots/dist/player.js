@@ -4,56 +4,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
+const dot_1 = require("./dot");
 const repository_1 = __importDefault(require("./repository"));
 class Player {
     constructor(sock) {
+        this.dot = new dot_1.Dot();
         this._id = 0;
-        this._hp = 0;
         this.onDisconnect = () => {
             repository_1.default.game.onPlayerDisconnect(this);
             repository_1.default.db.Query(`update sessions set ctime=GETDATE() where id = '${this.session}'`);
         };
         this.onRegister = (gname, password, fname, lname) => {
             if (this._id > 0)
-                this._sock.emit("register", false, "already logged in");
+                this.sock.emit("register", false, "already logged in");
             else {
                 repository_1.default.db.Query(`insert users (gname, password, fname, lname) values ('${gname}','${password}','${fname}','${lname}')`, (res) => {
-                    this._sock.emit("register", "error" !== res, "");
+                    this.sock.emit("register", "error" !== res, "");
                 });
             }
         };
         this.onLogin = (name, password) => {
             if (this._id > 0)
-                this._sock.emit("login", false, "already logged in");
+                this.sock.emit("login", false, "already logged in");
             else {
                 repository_1.default.db.Query(`select id from users where gname = '${name}' and password = '${password}'`, (res) => {
                     if (res.length <= 0)
-                        this._sock.emit("login", false, "wrong gamer name or password");
+                        this.sock.emit("login", false, "wrong gamer name or password");
                     else {
                         this._id = res[0].id;
-                        this._sock.emit("login", true, this.id);
+                        this.sock.emit("login", true, this.id);
                         console.log("logged-in", this.id);
+                        this.dot.name = name;
                     }
                 });
             }
         };
-        this.onJoin = () => {
-            this._sock.emit("join", repository_1.default.game.onPlayerJoin(this));
-        };
-        this.onMessage = (code, data) => {
-            repository_1.default.game.onPlayerMessage(this, code, data);
-        };
-        this._sock = sock;
-        this._sock.on("disconnect", this.onDisconnect);
-        this._sock.on("login", this.onLogin);
-        this._sock.on("register", this.onRegister);
-        this._sock.on("join", this.onJoin);
-        this._sock.on("message", this.onMessage);
+        this.sock = sock;
+        this.sock.on("disconnect", this.onDisconnect);
+        this.sock.on("login", this.onLogin);
+        this.sock.on("register", this.onRegister);
+        this.sock.on("join", () => repository_1.default.game.onPlayerJoining(this));
+        this.sock.on("joined", (currTime) => this.dot.latency = Math.min(0.2, ((new Date()).getTime() - currTime) / 2000.0));
+        this.sock.on("latency", () => repository_1.default.game.onPlayerLatency(this));
+        this.sock.on("message", (code, data) => repository_1.default.game.onPlayerMessage(this, code, data));
         repository_1.default.db.Query(`insert sessions (id) values('${this.session}')`);
     }
     get id() { return this._id; }
-    get HP() { return this._hp; }
-    set HP(v) { this._hp = v; }
-    get session() { return this._sock.id; }
+    get session() { return this.sock.id; }
 }
 exports.Player = Player;

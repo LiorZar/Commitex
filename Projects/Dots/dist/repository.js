@@ -6,20 +6,14 @@ class Repository {
     constructor() {
         this.db = new db_1.DB();
         this.game = new game_1.Game();
-        this.currTime = (new Date()).getTime();
-        this.saveTime = 0;
-        this.killTime = 0;
-        this.onTick = this.tick.bind(this);
-        setInterval(this.onTick, 16);
+        this._io = null;
     }
     Init() {
         console.log("Running");
         this.db.Query("delete sessions");
     }
-    tick() {
-        const prevTime = this.currTime;
-        this.currTime = (new Date()).getTime();
-    }
+    get io() { return this._io; }
+    set io(s) { this._io = s; }
 }
 const rep = new Repository();
 exports.default = rep;

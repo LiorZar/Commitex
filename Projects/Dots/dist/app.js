@@ -13,8 +13,8 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.static("public"));
 const server = (0, http_1.createServer)(app);
-const io = new socket_io_1.Server(server, {});
-io.on("connection", (socket) => {
+repository_1.default.io = new socket_io_1.Server(server, {});
+repository_1.default.io.on("connection", (socket) => {
     console.log("connected", socket.id);
     repository_1.default.game.NewConnection(socket);
 });
