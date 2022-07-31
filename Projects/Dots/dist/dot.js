@@ -14,7 +14,9 @@ const DOT_DOT_COL_FACTOR = 10;
 const DOT_DOT_COL_HP = 10;
 const DOT_SHOT_COL_FACTOR = 50;
 const DOT_SHOT_COL_HP = 20;
+const DOT_KILL_HP = 50;
 const RADIUS = 10.0;
+const RADUIS_EX = RADIUS + 1.0;
 const SIZE = 1000.0;
 const COLORS = ["red", "cyan", "blue", "lightblue", "purple", "yellow", "lime", "magenta", "pink", "white", "silver", "orange", "brown", "maroon", "green", "olive", "aquamarine"];
 class Dot extends mass_1.Mass {
@@ -29,7 +31,7 @@ class Dot extends mass_1.Mass {
         this.tPos = new pt_1.PT();
         this.tDir = new pt_1.PT();
         this.color = COLORS[clock_1.Clock.RandN(COLORS.length)];
-        this.position.set(clock_1.Clock.RandB(RADIUS, SIZE - RADIUS), clock_1.Clock.RandB(RADIUS, SIZE - RADIUS));
+        this.position.set(clock_1.Clock.RandB(RADUIS_EX, SIZE - RADUIS_EX), clock_1.Clock.RandB(RADUIS_EX, SIZE - RADUIS_EX));
     }
     get HP() { return this._hp; }
     set HP(v) { this._hp = v; this.alive = this._hp > 0; }
@@ -61,6 +63,10 @@ class Dot extends mass_1.Mass {
         const s2 = dot.shotsTest(this);
         this.HP -= DOT_SHOT_COL_HP * s1;
         dot.HP -= DOT_SHOT_COL_HP * s2;
+        if (s1 > 0 && !this.alive)
+            dot.HP += DOT_KILL_HP;
+        if (s2 > 0 && !dot.alive)
+            this.HP += DOT_KILL_HP;
         return false;
     }
     boundTest() {
@@ -68,6 +74,16 @@ class Dot extends mass_1.Mass {
             this.velocity.x *= -1;
         if (this.position.y < RADIUS || this.position.y > 1000 - RADIUS)
             this.velocity.y *= -1;
+        this.position.x = (0, collision_1.clamp)(this.position.x, RADUIS_EX, 1000 - RADUIS_EX);
+        this.position.y = (0, collision_1.clamp)(this.position.y, RADUIS_EX, 1000 - RADUIS_EX);
+    }
+    hpTest() {
+        if (!this.alive)
+            return true;
+        if (this.HP > 0)
+            return false;
+        this.HP = 0;
+        return true;
     }
     shotsTest(dot) {
         let count = 0;

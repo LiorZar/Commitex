@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CollisionResponse = exports.Sphere2Sphere = void 0;
+exports.clamp = exports.CollisionResponse = exports.Sphere2Sphere = void 0;
 //-----------------------------------------------------------------------------------------------//
 function Sphere2Sphere(c1, r1, c2, r2) {
     const dis = c1._sub(c2).length;
@@ -24,4 +24,7 @@ function CollisionResponse(vel1, M1, vel2, M2) {
     vel2.copy(V2);
 }
 exports.CollisionResponse = CollisionResponse;
+//-----------------------------------------------------------------------------------------------//
+function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+exports.clamp = clamp;
 //-----------------------------------------------------------------------------------------------//

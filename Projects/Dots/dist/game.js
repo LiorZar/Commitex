@@ -20,7 +20,6 @@ class Game {
             this.latency();
             this.simulate();
             this.collisionTest();
-            this.hpTest();
             this.broadcastData();
         };
         setInterval(this.tick, 20);
@@ -56,7 +55,6 @@ class Game {
         player.dot.latency = Math.min(0.2, (clock_1.Clock.currTime - this.latencyTime) / 2000.0);
     }
     onPlayerMessage(player, code, data) {
-        //console.log("message", code, data);
         if ("me" === code) {
             player.dot.fill(data);
         }
@@ -75,11 +73,8 @@ class Game {
             this.inGame[id].simulate();
     }
     collisionTest() {
-        const dots = [];
-        for (let id in this.inGame) {
-            if (this.inGame[id].alive)
-                dots.push(this.inGame[id]);
-        }
+        const ids = Object.keys(this.inGame);
+        const dots = Object.values(this.inGame);
         const len = dots.length;
         for (let i = 0; i < len; ++i) {
             const d = dots[i];
@@ -87,9 +82,9 @@ class Game {
                 dots[j].collisionTest(d);
             }
             d.boundTest();
+            if (d.hpTest())
+                delete this.inGame[ids[i]];
         }
-    }
-    hpTest() {
     }
     broadcastData() {
         repository_1.default.io.emit("game", this.inGame);
