@@ -132,6 +132,7 @@ Arr.sum();
 Arr.add("-hello");
 Arr.log();
 
+if (1 === 2) console.log("x");
 Arr.arr = nums;
 Arr.log();
 Arr.sum();
