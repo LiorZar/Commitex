@@ -225,3 +225,4 @@ let arr = [3, 5, 6];
 arrManip(arr, squar);
 arrManip(arr, squar);
 arrManip(arr, div);
+// hehe, entire exierces no example with zero parameters. my bad :)

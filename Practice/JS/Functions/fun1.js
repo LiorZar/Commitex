@@ -97,22 +97,49 @@ function ex4() {
 
 // ex5
 // write a function that draws a line, between two points a, b, with some color
-function drawLine(a, b, color) {
-  var x1, x2, y1, y2;
-  var m = (y2 - y1) / (x2 - x1);
-  var n;
-  n = y1 - m * x1;
+function drawLineOriginal(a, b, color) {
+  var m = (a.y - b.y) / (a.x - b.x);
+  console.log(m);
+
+  var n = a.y - m * a.x;
+  console.log(n);
+
+  var x, y;
   for (x = LEFT; x < RIGHT; x += PX * 0.1) {
     y = m * x + n;
     setPoint(x, y, "red");
   }
 }
-drawLine({ x: 10, y: 10 }, { x: 50, y: 50 }, "red");
+
+function drawLine(p1, p2, color) {
+  // y = ax + b;
+  var a = (p1.y - p2.y) / (p1.x - p2.x); // this is great
+  console.log(a);
+
+  var b = p1.y - a * p1.x; // this is also great
+  console.log(b);
+
+  var x, y;
+
+  for (x = p1.x; x < p2.x; x += PX * 0.1) {
+    // that the correct idea
+    // it is good enough. but have a few issues that are not important
+    // ok?
+    y = a * x + b;
+    setPoint(x, y, color); // set an aribitary pixel with a color in location x, y
+  }
+}
+function ex5() {
+  drawLine({ x: -5, y: -10 }, { x: 10, y: 10 }, "red");
+}
+render = ex5;
 
 // ex6
 // use the function you wrote in ex5(drawLine) to draw rectangle, like ex2
-function ex6() {}
-//render = ex6;
+function drawRectangle(point1, point2, point3, point4) {
+  drawLine(point1, point2, "red");
+}
+//render = drawRectangle;
 
 // ex7
 // write a function that draws a filled rectangle
